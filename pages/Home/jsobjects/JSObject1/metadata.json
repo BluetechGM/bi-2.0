@@ -1,0 +1,20 @@
+{
+  "gitSyncId": "6904ab7642599522ad71b295_0b7df7fe-f2b4-43a2-8f1e-3f1cc21b3c07",
+  "id": "Home_JSObject1",
+  "unpublishedCollection": {
+    "name": "JSObject1",
+    "pageId": "Home",
+    "pluginId": "js-plugin",
+    "pluginType": "JS",
+    "variables": [
+      {
+        "name": "contatosTempoReal",
+        "value": "{}"
+      },
+      {
+        "name": "_atualizando",
+        "value": "false"
+      }
+    ]
+  }
+}

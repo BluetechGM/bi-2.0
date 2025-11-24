@@ -1,0 +1,6 @@
+SELECT *
+FROM rotas_otimizadas
+WHERE DATE(created_at) BETWEEN 
+  {{ DatePicker_Data_Inicio.selectedDate.split("T")[0] }} 
+  AND 
+  {{ DatePicker_Data_Fim.selectedDate.split("T")[0] }};
