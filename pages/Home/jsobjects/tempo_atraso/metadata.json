@@ -1,0 +1,11 @@
+{
+  "gitSyncId": "6904ab7642599522ad71b295_47b6b975-1d8b-44c4-89a8-b22b9e92c6c6",
+  "id": "Home_tempo_atraso",
+  "unpublishedCollection": {
+    "name": "tempo_atraso",
+    "pageId": "Home",
+    "pluginId": "js-plugin",
+    "pluginType": "JS",
+    "variables": []
+  }
+}

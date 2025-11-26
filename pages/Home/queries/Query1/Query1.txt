@@ -1,0 +1,10 @@
+SELECT 
+    id,
+    matricula,
+    agrupamento_id,
+    DATE_SUB(created_at, INTERVAL 3 HOUR) as created_at_br,
+    filial_sigla,
+    ultimo_evento
+FROM motoboys_disponiveis
+WHERE DATE(DATE_SUB(created_at, INTERVAL 3 HOUR)) = CURDATE()
+ORDER BY created_at ASC
