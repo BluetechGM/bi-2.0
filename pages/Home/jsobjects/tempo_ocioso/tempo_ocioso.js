@@ -58,12 +58,38 @@ export default {
     const pedidos = pedidos_nao_atrelados.data || [];
     const saidas = saidas_motoboys.data || [];
 
-    const resultados = motoboys.map(motoboy => {
+    // Controle do último fim de período por motoboy+filial
+    const ultimoFimPeriodoPorMotoboy = {};
+
+    // Ordenar disponibilidades por filial, motoboy e horário
+    const motoboysOrdenados = [...motoboys].sort((a, b) => {
+      const filialA = a.filial_sigla || '';
+      const filialB = b.filial_sigla || '';
+      if (filialA !== filialB) return filialA.localeCompare(filialB);
+
+      const matA = normalizarMatricula(a.matricula);
+      const matB = normalizarMatricula(b.matricula);
+      if (matA !== matB) return matA.localeCompare(matB);
+
+      const dataA = parseMySQLDate(a.created_at_br) || new Date(0);
+      const dataB = parseMySQLDate(b.created_at_br) || new Date(0);
+      return dataA - dataB;
+    });
+
+    const resultados = motoboysOrdenados.map(motoboy => {
       const matricula = normalizarMatricula(motoboy.matricula);
       const filial = motoboy.filial_sigla;
       const tempoDisponivel = parseMySQLDate(motoboy.created_at_br);
 
       if (!tempoDisponivel || isNaN(tempoDisponivel.getTime())) {
+        return null;
+      }
+
+      const chave = `${filial}|${matricula}`;
+      const ultimoFim = ultimoFimPeriodoPorMotoboy[chave];
+
+      // Se ainda estamos dentro de um período já medido, ignora esta disponibilidade
+      if (ultimoFim && tempoDisponivel <= ultimoFim) {
         return null;
       }
 
@@ -117,6 +143,14 @@ export default {
         : limiteAnalise;
 
       const tempoSemPedidoMinutos = (fimPeriodoSemPedido - tempoDisponivel) / (1000 * 60);
+
+      // Se não houve tempo positivo, não faz sentido registrar
+      if (!tempoSemPedidoMinutos || tempoSemPedidoMinutos <= 0) {
+        return null;
+      }
+
+      // Atualiza o último fim de período deste motoboy+filial
+      ultimoFimPeriodoPorMotoboy[chave] = fimPeriodoSemPedido;
 
       return {
         matricula: matricula,
@@ -179,7 +213,7 @@ export default {
         tempoTotalSemPedidoMinutos: Math.round(totalSemPedido * 100) / 100,
         tempoMedioSemPedidoMinutos: Math.round(mediaSemPedido * 100) / 100,
         tempoMaximoSemPedidoMinutos: Math.round(maxSemPedido * 100) / 100,
-        tempoTotalFormatado: `${Math.floor(totalSemPedido / 60)}h ${Math.round(totalSemPedido % 60)}m`
+        tempoTotalFormatado: `${Math.floor(totalSemPedido / 60)}h ${Math.round(totalSemPedido % 60)}m` 
       },
       porFilial: filiais,
       interpretacao: 'Quanto MAIOR o tempo, mais MOTOBOYS OCIOSOS (excesso de motoboys na filial)'
