@@ -5,7 +5,7 @@
   "pluginType": "DB",
   "unpublishedAction": {
     "actionConfiguration": {
-      "body": "SELECT \n    id,\n    matricula,\n    agrupamento_id,\n    DATE_SUB(created_at, INTERVAL 3 HOUR) as created_at_br,\n    filial_sigla,\n    ultimo_evento\nFROM motoboys_disponiveis\nWHERE DATE(DATE_SUB(created_at, INTERVAL 3 HOUR)) = CURDATE()\nORDER BY created_at ASC",
+      "body": "SELECT \n    id,\n    matricula,\n    agrupamento_id,\n    DATE_SUB(created_at, INTERVAL 3 HOUR) AS created_at_br,\n    filial_sigla,\n    ultimo_evento\nFROM motoboys_disponiveis\nWHERE DATE(DATE_SUB(created_at, INTERVAL 3 HOUR))\n      BETWEEN {{ moment(DatePicker_Data_Inicio.selectedDate).format(\"YYYY-MM-DD\") }}\n          AND {{ moment(DatePicker_Data_Fim.selectedDate).format(\"YYYY-MM-DD\") }}\nORDER BY created_at ASC;",
       "encodeParamsToggle": true,
       "paginationType": "NONE",
       "pluginSpecifiedTemplates": [
@@ -22,7 +22,11 @@
       "name": "prododison",
       "pluginId": "mysql-plugin"
     },
-    "dynamicBindingPathList": [],
+    "dynamicBindingPathList": [
+      {
+        "key": "body"
+      }
+    ],
     "name": "motoboys_disponiveis",
     "pageId": "Home",
     "runBehaviour": "AUTOMATIC",

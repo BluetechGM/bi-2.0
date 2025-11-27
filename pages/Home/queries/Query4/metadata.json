@@ -1,6 +1,6 @@
 {
-  "gitSyncId": "6904ab7642599522ad71b295_969995f1-56b8-4c89-a232-9c64521de26a",
-  "id": "Home_saidas_motoboys",
+  "gitSyncId": "6904ab7642599522ad71b295_78ac653c-bb96-4b2f-a64e-1ad42cf5d116",
+  "id": "Home_Query4",
   "pluginId": "oracle-plugin",
   "pluginType": "DB",
   "unpublishedAction": {
@@ -29,9 +29,9 @@
         "key": "formData.body.data"
       }
     ],
-    "name": "saidas_motoboys",
+    "name": "Query4",
     "pageId": "Home",
-    "runBehaviour": "AUTOMATIC",
+    "runBehaviour": "MANUAL",
     "userSetOnLoad": false
   }
 }

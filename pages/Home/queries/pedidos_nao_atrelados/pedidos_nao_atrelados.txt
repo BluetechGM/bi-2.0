@@ -3,8 +3,10 @@ SELECT
     agrupamento_id,
     numped,
     rota,
-    DATE_SUB(created_at, INTERVAL 3 HOUR) as created_at_br,
+    DATE_SUB(created_at, INTERVAL 3 HOUR) AS created_at_br,
     filial
 FROM pedidos_nao_atrelados
-WHERE DATE(DATE_SUB(created_at, INTERVAL 3 HOUR)) = CURDATE()
-ORDER BY created_at ASC
+WHERE DATE(DATE_SUB(created_at, INTERVAL 3 HOUR))
+      BETWEEN {{ moment(DatePicker_Data_Inicio.selectedDate).format("YYYY-MM-DD") }}
+          AND {{ moment(DatePicker_Data_Fim.selectedDate).format("YYYY-MM-DD") }}
+ORDER BY created_at ASC;
